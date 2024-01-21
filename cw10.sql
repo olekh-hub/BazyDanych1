@@ -88,11 +88,26 @@ END
 
 --7)
 USE AdventureWorks2022
-BEGIN TRANSACTION
---UPDATE Production.Product
-DECLARE @Mean FLOAT
-SET @Mean = ( SELECT AVG(StandardCost) FROM Production.Product ) 
+BEGIN TRANSACTION;
+SELECT StandardCost FROM Production.Product
+DECLARE @ilosc INT
+SELECT @ilosc = @@ROWCOUNT FROM Production.Product
+DELETE FROM Production.Product
+WHERE StandardCost > ( SELECT AVG(Product.StandardCost) FROM Production.Product )
 
+SELECT StandardCost FROM Production.Product
+DECLARE @nowailosc INT
+SELECT @nowailosc = @@ROWCOUNT FROM Production.Product
+
+IF ( @ilosc - @nowailosc > 10 )
+BEGIN 
+ROLLBACK TRANSACTION;
+END
+
+ELSE
+BEGIN
+COMMIT TRANSACTION;
+END;
 
 
 
