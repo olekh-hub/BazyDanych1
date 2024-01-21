@@ -17,6 +17,11 @@ SET telefon =
 	WHEN id_pracownika = 'AW10' THEN '+48-987-654-321'
 END;
 
+--b)
+UPDATE pracownicy
+SET telefon = SUBSTR(telefon, 1, 3) || '-' || 
+SUBSTR(telefon, 4, 3) || '-' || SUBSTR(telefon, 7, 3);
+
 --c) wyswietl dane pracownika, ktorego nazwisko jest najdluzsze uzywajac duzych liter
 SELECT UPPER(nazwisko) FROM pracownicy
 ORDER BY LENGTH(nazwisko) DESC
